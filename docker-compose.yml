@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  rails:
+    build: ./nawy-backend-rails
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://root:password@postgres-db/
+    depends_on:
+      - "postgres-db"
+    volumes:
+      - ./nawy-backend-rails:/rails
+    command: sh -c "rm -f /rails/tmp/pids/server.pid && exec bin/rails s -b '0.0.0.0'"
+
+  postgres-db:
+    image: postgres
+    environment:
+      POSTGRES_DB: nawy_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./nawy-backend-rails/tmp/db:/var/lib/postgresql/data
+    ports:
+      - "5433:5433"
+
+  next-js:
+    container_name: nextjs-app
+    build: ./nawy-frontend-next
+    ports:
+      - "4000:4000"
+    depends_on:
+      - "postgres-db"
+      - "rails"
+    volumes:
+      - ./nawy-frontend-next:/nawy-frontend-next/app
+      - /nawy-frontend-next/app/node_modules
+    command: npm run dev -- -p 4000
+
+  react-native:
+    container_name: react-native-app
+    build: ./nawy-mobile-application-react-native
+    ports:
+      - "8081:8081"
+    depends_on:
+      - "postgres-db"
+      - "rails"
+    volumes:
+      - ./nawy-mobile-application-react-native:/nawy-mobile-application-react-native/app
+      - /nawy-mobile-application-react-native/app/node_modules
+    command: npm run web
