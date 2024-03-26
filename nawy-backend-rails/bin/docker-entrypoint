@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Remove server.pid to avoid startup issues
+echo "Removing potentially existing server PID file..."
+rm -f /rails/tmp/pids/server.pid
+
+# Wait for Postgres to become available
+echo "Waiting for postgres..."
+while ! nc -z postgres-db 5432; do
+  sleep 0.1
+done
+echo "PostgreSQL started"
+
 # If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then
   ./bin/rails db:create
