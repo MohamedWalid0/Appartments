@@ -11,10 +11,10 @@ RUN apt-get update -qq && \
 # Rails app lives here
 WORKDIR /rails
 
-# Set production environment
+# Set development environment
 ENV RAILS_LOG_TO_STDOUT="1" \
     RAILS_SERVE_STATIC_FILES="true" \
-    RAILS_ENV="production" \
+    RAILS_ENV="development" \
     BUNDLE_WITHOUT="development"
 
 # Install application gems
@@ -30,8 +30,8 @@ RUN chmod +x /rails/bin/docker-entrypoint
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-# RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+# Precompiling assets for development without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]

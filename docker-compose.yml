@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgres://root:password@postgres-db/
+      - DATABASE_URL=postgres://root:password@postgres-db:5432/
     depends_on:
       - "postgres-db"
     volumes:
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./nawy-backend-rails/tmp/db:/var/lib/postgresql/data
     ports:
-      - "5433:5433"
+      - "5432:5432"
 
   next-js:
     container_name: nextjs-app
