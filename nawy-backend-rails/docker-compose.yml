@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://root:password@postgres-db/
+    depends_on:
+      - "postgres-db"
+    volumes:
+      - .:/rails
+
+  postgres-db:
+    image: postgres
+    environment:
+      POSTGRES_DB: nawy_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    ports:
+      - "5433:5433"

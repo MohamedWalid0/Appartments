@@ -1,0 +1,12 @@
+nawy-backend-rails/log
+nawy-backend-rails/tmp
+nawy-backend-rails/public/assets
+nawy-backend-rails/storage
+
+nawy-frontend-next/.next
+nawy-frontend-next/node_modules
+nawy-frontend-next/package-lock.json
+
+nawy-mobile-application-react-native/.expo
+nawy-mobile-application-react-native/node_modules
+nawy-mobile-application-react-native/package-lock.json
