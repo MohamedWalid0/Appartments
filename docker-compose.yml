@@ -10,7 +10,7 @@ services:
       - "postgres-db"
     volumes:
       - ./nawy-backend-rails:/rails
-    command: sh -c "rm -f /rails/tmp/pids/server.pid && exec bin/rails s -b '0.0.0.0'"
+    command: sh -c "rm -f /rails/tmp/pids/server.pid && exec bin/rails s -b '0.0.0.0' && exec bin/rails db:create && exec bin/rails db:migrate && exec bin/rails db:seed"
 
   postgres-db:
     image: postgres
